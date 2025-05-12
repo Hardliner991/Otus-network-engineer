@@ -39,6 +39,8 @@
 |      |ge-0.0.1|192.168.100.42 |  ||ACX7 ge-0.0.1 - ge-0.0.0 ACX6 |Connectivity      |
 |      |ge-0.0.0|192.168.100.45|  ||ACX7 ge-0.0.0 - ge-0.0.1 ACX8 |Connectivity      |
 |ACX6    |    |10.192.2.8 |               ||      |Management (lo0) |
+|      |ge-0.0.1|192.168.100.46 |  ||ACX6 ge-0.0.1 - ge-0.0.0 ACX6 |Connectivity      |
+|      |ge-0.0.0|192.168.100.49 |  ||ACX6 ge-0.0.0 - ge-0.0.1 ACX8 |Connectivity      |
 
 
 ### Конфигурация оборудования: 
@@ -377,7 +379,6 @@ set protocols ospf area 0.0.0.1 interface lo0.0 passive
 
 
 
-|      |ge-0.0.1|192.168.100.46 |  ||ACX6 ge-0.0.1 - ge-0.0.0 ACX6 |Connectivity      |
-|      |ge-0.0.0|192.168.100.49 |  ||ACX6 ge-0.0.0 - ge-0.0.1 ACX8 |Connectivity      |
+
 
 
