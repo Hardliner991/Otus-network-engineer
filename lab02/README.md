@@ -43,6 +43,7 @@
 
 ### Конфигурация оборудования: 
 
+```
 BBR1
 
 deactivate system syslog user *
@@ -371,7 +372,7 @@ set protocols ospf area 0.0.0.1 interface ge-0/0/1.0 interface-type p2p
 set protocols ospf area 0.0.0.1 interface ge-0/0/0.0 interface-type p2p
 set protocols ospf area 0.0.0.1 interface lo0.0 passive
 
-
+```
 
 
 
