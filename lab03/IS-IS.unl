@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="IS-IS" version="1" scripttimeout="300" lock="0">
+  <topology>
+    <nodes>
+      <node id="1" name="BBR3" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="afc6d5c1-e4be-4cf0-b8bd-cc20ed708ee9" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JuniperMX.png" config="0" left="618" top="225">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="2"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="3"/>
+        <interface id="4" name="em4 / ge-0/0/2" type="ethernet" network_id="5"/>
+        <interface id="5" name="em5 / ge-0/0/3" type="ethernet" network_id="7"/>
+      </node>
+      <node id="2" name="BBR4" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="a6176830-f2b3-484a-9fd7-cb419019a319" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JuniperMX.png" config="0" left="1020" top="222">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="2"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="4"/>
+        <interface id="4" name="em4 / ge-0/0/2" type="ethernet" network_id="6"/>
+        <interface id="5" name="em5 / ge-0/0/3" type="ethernet" network_id="8"/>
+      </node>
+      <node id="3" name="SW1" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="b4eaa6f2-4b11-4918-ab0e-7193199b3326" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JunipervQFXpfe.png" config="0" left="618" top="450">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="5"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="9"/>
+        <interface id="4" name="em4 / ge-0/0/2" type="ethernet" network_id="10"/>
+        <interface id="5" name="em5 / ge-0/0/3" type="ethernet" network_id="8"/>
+      </node>
+      <node id="4" name="SW2" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="e0026c6f-16c3-4c40-ace0-7aa6466c47d9" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JunipervQFXpfe.png" config="0" left="1029" top="447">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="6"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="9"/>
+        <interface id="4" name="em4 / ge-0/0/2" type="ethernet" network_id="11"/>
+        <interface id="5" name="em5 / ge-0/0/3" type="ethernet" network_id="7"/>
+      </node>
+      <node id="5" name="BBR1" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="46f9ce42-7289-42dc-871c-70f9774b6588" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JuniperMX.png" config="0" left="618" top="51">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="1"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="3"/>
+      </node>
+      <node id="6" name="BBR2" type="qemu" template="vmx" image="vmx-14.1R1.10-domestic" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="6" uuid="37954822-335c-416d-a197-612493284c0a" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic" qemu_version="2.12.0" qemu_arch="x86_64" qemu_nic="virtio-net-pci" delay="0" icon="JuniperMX.png" config="0" left="1014" top="48">
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="1"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="4"/>
+      </node>
+      <node id="7" name="VPC1" type="vpcs" template="vpcs" image="" ethernet="1" delay="0" icon="Desktop.png" config="0" left="615" top="660">
+        <interface id="0" name="eth0" type="ethernet" network_id="10"/>
+      </node>
+      <node id="8" name="VPC2" type="vpcs" template="vpcs" image="" ethernet="1" delay="0" icon="Desktop.png" config="0" left="1026" top="666">
+        <interface id="0" name="eth0" type="ethernet" network_id="11"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="bridge" name="Net-vMXiface_2" left="687" top="211" visibility="0"/>
+      <network id="2" type="bridge" name="Net-vMXiface_2" left="686" top="319" visibility="0"/>
+      <network id="3" type="bridge" name="Net-vMXiface_3" left="687" top="211" visibility="0"/>
+      <network id="4" type="bridge" name="Net-vMXiface_3" left="879" top="214" visibility="0"/>
+      <network id="5" type="bridge" name="Net-vMXiface_4" left="686" top="319" visibility="0"/>
+      <network id="6" type="bridge" name="Net-vMXiface_4" left="888" top="319" visibility="0"/>
+      <network id="7" type="bridge" name="Net-vMXiface_5" left="686" top="319" visibility="0"/>
+      <network id="8" type="bridge" name="Net-vMXiface_5" left="888" top="319" visibility="0"/>
+      <network id="9" type="bridge" name="Net-vMXiface_3" left="687" top="538" visibility="0"/>
+      <network id="10" type="bridge" name="Net-vMXiface_4" left="687" top="538" visibility="0"/>
+      <network id="11" type="bridge" name="Net-vMXiface_4" left="888" top="538" visibility="0"/>
+    </networks>
+  </topology>
+  <objects>
+    <textobjects>
+      <textobject id="1" name="txt 1" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDEiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSB1aS1yZXNpemFibGUganRrLWRyYWdnYWJsZSBkcmFnc3RvcHBlZCIgZGF0YS1wYXRoPSIxIiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDYxNXB4OyB0b3A6IDI3cHg7IGN1cnNvcjogbW92ZTsgei1pbmRleDogMTAwMTsiPjxwIGFsaWduPSJjZW50ZXIiIHN0eWxlPSJ2ZXJ0aWNhbC1hbGlnbjp0b3A7Y29sb3I6IzAwMDAwMDtiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmY7Zm9udC1zaXplOjEycHg7Zm9udC13ZWlnaHQ6IG5vcm1hbDsiPjEwLjE5Mi4yLjEgICAgICAgIDwvcD48ZGl2IGNsYXNzPSJ1aS1yZXNpemFibGUtaGFuZGxlIHVpLXJlc2l6YWJsZS1lIiBzdHlsZT0iei1pbmRleDogOTA7Ij48L2Rpdj48ZGl2IGNsYXNzPSJ1aS1yZXNpemFibGUtaGFuZGxlIHVpLXJlc2l6YWJsZS1zIiBzdHlsZT0iei1pbmRleDogOTA7Ij48L2Rpdj48ZGl2IGNsYXNzPSJ1aS1yZXNpemFibGUtaGFuZGxlIHVpLXJlc2l6YWJsZS1zZSB1aS1pY29uIHVpLWljb24tZ3JpcHNtYWxsLWRpYWdvbmFsLXNlIiBzdHlsZT0iei1pbmRleDogOTA7Ij48L2Rpdj48L2Rpdj4=</data>
+      </textobject>
+      <textobject id="2" name="txt 2" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDIiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSBqdGstZHJhZ2dhYmxlIGRyYWdzdG9wcGVkIHVpLXJlc2l6YWJsZS1hdXRvaGlkZSIgZGF0YS1wYXRoPSIyIiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDEwMDVweDsgdG9wOiAyN3B4OyBjdXJzb3I6IG1vdmU7IHotaW5kZXg6IDEwMDE7IGhlaWdodDogMjRweDsgd2lkdGg6IGF1dG87Ij48cCBhbGlnbj0iY2VudGVyIiBzdHlsZT0idmVydGljYWwtYWxpZ246dG9wO2NvbG9yOiMwMDAwMDA7YmFja2dyb3VuZC1jb2xvcjojZmZmZmZmO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtd2VpZ2h0OiBub3JtYWw7IiBjb250ZW50ZWRpdGFibGU9ImZhbHNlIiBjbGFzcz0iIj4xMC4xOTIuMi4yPC9wPjwvZGl2Pg==</data>
+      </textobject>
+      <textobject id="3" name="txt 3" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDMiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSBqdGstZHJhZ2dhYmxlIGRyYWdzdG9wcGVkIHVpLXJlc2l6YWJsZS1hdXRvaGlkZSIgZGF0YS1wYXRoPSIzIiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDU2MXB4OyB0b3A6IDI0MHB4OyBjdXJzb3I6IG1vdmU7IHotaW5kZXg6IDEwMDE7IGhlaWdodDogMjRweDsgd2lkdGg6IGF1dG87Ij48cCBhbGlnbj0iY2VudGVyIiBzdHlsZT0idmVydGljYWwtYWxpZ246dG9wO2NvbG9yOiMwMDAwMDA7YmFja2dyb3VuZC1jb2xvcjojZmZmZmZmO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtd2VpZ2h0OiBub3JtYWw7IiBjb250ZW50ZWRpdGFibGU9ImZhbHNlIiBjbGFzcz0iIj4xMC4xOTIuMi4zPC9wPjwvZGl2Pg==</data>
+      </textobject>
+      <textobject id="4" name="txt 4" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDQiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSBqdGstZHJhZ2dhYmxlIGRyYWdzdG9wcGVkIHVpLXJlc2l6YWJsZSIgZGF0YS1wYXRoPSI0IiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDEwODNweDsgdG9wOiAyMTlweDsgY3Vyc29yOiBtb3ZlOyB6LWluZGV4OiAxMDAxOyBoZWlnaHQ6IDI0cHg7IHdpZHRoOiBhdXRvOyI+PHAgYWxpZ249ImNlbnRlciIgc3R5bGU9InZlcnRpY2FsLWFsaWduOnRvcDtjb2xvcjojMDAwMDAwO2JhY2tncm91bmQtY29sb3I6I2ZmZmZmZjtmb250LXNpemU6MTJweDtmb250LXdlaWdodDogbm9ybWFsOyIgY29udGVudGVkaXRhYmxlPSJmYWxzZSIgY2xhc3M9IiI+MTAuMTkyLjIuNDwvcD48ZGl2IGNsYXNzPSJ1aS1yZXNpemFibGUtaGFuZGxlIHVpLXJlc2l6YWJsZS1lIiBzdHlsZT0iei1pbmRleDogOTA7IGRpc3BsYXk6IGJsb2NrOyI+PC9kaXY+PGRpdiBjbGFzcz0idWktcmVzaXphYmxlLWhhbmRsZSB1aS1yZXNpemFibGUtcyIgc3R5bGU9InotaW5kZXg6IDkwOyBkaXNwbGF5OiBibG9jazsiPjwvZGl2PjxkaXYgY2xhc3M9InVpLXJlc2l6YWJsZS1oYW5kbGUgdWktcmVzaXphYmxlLXNlIHVpLWljb24gdWktaWNvbi1ncmlwc21hbGwtZGlhZ29uYWwtc2UiIHN0eWxlPSJ6LWluZGV4OiA5MDsgZGlzcGxheTogYmxvY2s7Ij48L2Rpdj48L2Rpdj4=</data>
+      </textobject>
+      <textobject id="5" name="txt 5" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDUiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSBqdGstZHJhZ2dhYmxlIGRyYWdzdG9wcGVkIHVpLXJlc2l6YWJsZSIgZGF0YS1wYXRoPSI1IiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDU0M3B4OyB0b3A6IDY0NXB4OyBjdXJzb3I6IG1vdmU7IHotaW5kZXg6IDEwMDE7IGhlaWdodDogMjJweDsgd2lkdGg6IDczLjcxODhweDsiPjxwIGFsaWduPSJjZW50ZXIiIHN0eWxlPSJ2ZXJ0aWNhbC1hbGlnbjogdG9wOyBjb2xvcjogcmdiKDAsIDAsIDApOyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjU1LCAyNTUsIDI1NSk7IGZvbnQtc2l6ZTogMTFweDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsiIGNvbnRlbnRlZGl0YWJsZT0iZmFsc2UiIGNsYXNzPSIiPjEwMC4wLjAuMTA8L3A+PGRpdiBjbGFzcz0idWktcmVzaXphYmxlLWhhbmRsZSB1aS1yZXNpemFibGUtZSIgc3R5bGU9InotaW5kZXg6IDkwOyBkaXNwbGF5OiBibG9jazsiPjwvZGl2PjxkaXYgY2xhc3M9InVpLXJlc2l6YWJsZS1oYW5kbGUgdWktcmVzaXphYmxlLXMiIHN0eWxlPSJ6LWluZGV4OiA5MDsgZGlzcGxheTogYmxvY2s7Ij48L2Rpdj48ZGl2IGNsYXNzPSJ1aS1yZXNpemFibGUtaGFuZGxlIHVpLXJlc2l6YWJsZS1zZSB1aS1pY29uIHVpLWljb24tZ3JpcHNtYWxsLWRpYWdvbmFsLXNlIiBzdHlsZT0iei1pbmRleDogOTA7IGRpc3BsYXk6IGJsb2NrOyI+PC9kaXY+PC9kaXY+</data>
+      </textobject>
+      <textobject id="6" name="txt 6" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDYiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSBqdGstZHJhZ2dhYmxlIGRyYWdzdG9wcGVkIHVpLXJlc2l6YWJsZS1hdXRvaGlkZSIgZGF0YS1wYXRoPSI2IiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDEwODBweDsgdG9wOiA2MzlweDsgY3Vyc29yOiBtb3ZlOyB6LWluZGV4OiAxMDAxOyBoZWlnaHQ6IDIycHg7IHdpZHRoOiBhdXRvOyI+PHAgYWxpZ249ImNlbnRlciIgc3R5bGU9InZlcnRpY2FsLWFsaWduOiB0b3A7IGNvbG9yOiByZ2IoMCwgMCwgMCk7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTUsIDI1NSwgMjU1KTsgZm9udC1zaXplOiAxMXB4OyBmb250LXdlaWdodDogbm9ybWFsOyIgY29udGVudGVkaXRhYmxlPSJmYWxzZSIgY2xhc3M9IiI+MTAwLjAuMS4xMDwvcD48L2Rpdj4=</data>
+      </textobject>
+      <textobject id="7" name="txt 7" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDciIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSB1aS1yZXNpemFibGUganRrLWRyYWdnYWJsZSBkcmFnc3RvcHBlZCIgZGF0YS1wYXRoPSI3IiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDU1OHB4OyB0b3A6IDQ2OHB4OyBjdXJzb3I6IG1vdmU7IHotaW5kZXg6IDEwMDE7Ij48cCBhbGlnbj0iY2VudGVyIiBzdHlsZT0idmVydGljYWwtYWxpZ246dG9wO2NvbG9yOiMwMDAwMDA7YmFja2dyb3VuZC1jb2xvcjojZmZmZmZmO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtd2VpZ2h0OiBub3JtYWw7Ij4xMC4xOTIuMi41ICAgICAgICA8L3A+PGRpdiBjbGFzcz0idWktcmVzaXphYmxlLWhhbmRsZSB1aS1yZXNpemFibGUtZSIgc3R5bGU9InotaW5kZXg6IDkwOyI+PC9kaXY+PGRpdiBjbGFzcz0idWktcmVzaXphYmxlLWhhbmRsZSB1aS1yZXNpemFibGUtcyIgc3R5bGU9InotaW5kZXg6IDkwOyI+PC9kaXY+PGRpdiBjbGFzcz0idWktcmVzaXphYmxlLWhhbmRsZSB1aS1yZXNpemFibGUtc2UgdWktaWNvbiB1aS1pY29uLWdyaXBzbWFsbC1kaWFnb25hbC1zZSIgc3R5bGU9InotaW5kZXg6IDkwOyI+PC9kaXY+PC9kaXY+</data>
+      </textobject>
+      <textobject id="8" name="txt 8" type="text">
+        <data>PGRpdiBpZD0iY3VzdG9tVGV4dDgiIGNsYXNzPSJjdXN0b21TaGFwZSBjdXN0b21UZXh0IGNvbnRleHQtbWVudSB1aS1yZXNpemFibGUganRrLWRyYWdnYWJsZSBkcmFnc3RvcHBlZCIgZGF0YS1wYXRoPSI4IiBzdHlsZT0iZGlzcGxheTogaW5saW5lOyBwb3NpdGlvbjogYWJzb2x1dGU7IGxlZnQ6IDEwOThweDsgdG9wOiA0NTlweDsgY3Vyc29yOiBtb3ZlOyB6LWluZGV4OiAxMDAxOyI+PHAgYWxpZ249ImNlbnRlciIgc3R5bGU9InZlcnRpY2FsLWFsaWduOnRvcDtjb2xvcjojMDAwMDAwO2JhY2tncm91bmQtY29sb3I6I2ZmZmZmZjtmb250LXNpemU6MTJweDtmb250LXdlaWdodDogbm9ybWFsOyI+MTAuMTkyLjIuNiAgICAgICAgPC9wPjxkaXYgY2xhc3M9InVpLXJlc2l6YWJsZS1oYW5kbGUgdWktcmVzaXphYmxlLWUiIHN0eWxlPSJ6LWluZGV4OiA5MDsiPjwvZGl2PjxkaXYgY2xhc3M9InVpLXJlc2l6YWJsZS1oYW5kbGUgdWktcmVzaXphYmxlLXMiIHN0eWxlPSJ6LWluZGV4OiA5MDsiPjwvZGl2PjxkaXYgY2xhc3M9InVpLXJlc2l6YWJsZS1oYW5kbGUgdWktcmVzaXphYmxlLXNlIHVpLWljb24gdWktaWNvbi1ncmlwc21hbGwtZGlhZ29uYWwtc2UiIHN0eWxlPSJ6LWluZGV4OiA5MDsiPjwvZGl2PjwvZGl2Pg==</data>
+      </textobject>
+    </textobjects>
+  </objects>
+</lab>
