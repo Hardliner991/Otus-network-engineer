@@ -370,7 +370,9 @@ router bgp 65003
 end
 ```
 
+### Проверка состояния eBGP: 
 
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/lab04/eBGP.png)
 
 
 
