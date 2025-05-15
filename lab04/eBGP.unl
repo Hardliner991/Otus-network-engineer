@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="eBGP" version="1" scripttimeout="300" lock="0">
+  <topology>
+    <nodes>
+      <node id="1" name="spine-1" type="qemu" template="veos" image="veos-4.21.1.1F" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="9" uuid="6be6daf1-76db-40f3-bd05-e915215801a7" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -display none -no-user-config -rtc base=utc -boot order=d" qemu_version="4.1.0" qemu_arch="x86_64" delay="0" icon="AristaSW.png" config="0" left="639" top="219">
+        <interface id="1" name="Eth1" type="ethernet" network_id="3"/>
+        <interface id="2" name="Eth2" type="ethernet" network_id="2"/>
+        <interface id="3" name="Eth3" type="ethernet" network_id="1"/>
+      </node>
+      <node id="2" name="spine-2" type="qemu" template="veos" image="veos-4.21.1.1F" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="9" uuid="f1e3c98f-878c-453c-8f77-32f191af0ef2" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -display none -no-user-config -rtc base=utc -boot order=d" qemu_version="4.1.0" qemu_arch="x86_64" delay="0" icon="AristaSW.png" config="0" left="945" top="216">
+        <interface id="1" name="Eth1" type="ethernet" network_id="4"/>
+        <interface id="2" name="Eth2" type="ethernet" network_id="5"/>
+        <interface id="3" name="Eth3" type="ethernet" network_id="6"/>
+      </node>
+      <node id="3" name="Leaf1" type="qemu" template="veos" image="veos-4.21.1.1F" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="9" uuid="d145e461-cb4b-4072-9cc9-65c98cace8b7" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -display none -no-user-config -rtc base=utc -boot order=d" qemu_version="4.1.0" qemu_arch="x86_64" delay="0" icon="AristaSW.png" config="0" left="519" top="414">
+        <interface id="1" name="Eth1" type="ethernet" network_id="3"/>
+        <interface id="2" name="Eth2" type="ethernet" network_id="4"/>
+        <interface id="5" name="Eth5" type="ethernet" network_id="7"/>
+      </node>
+      <node id="4" name="Leaf2" type="qemu" template="veos" image="veos-4.21.1.1F" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="9" uuid="0a3c5631-1674-485b-be75-4ad83c6cd23c" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -display none -no-user-config -rtc base=utc -boot order=d" qemu_version="4.1.0" qemu_arch="x86_64" delay="0" icon="AristaSW.png" config="0" left="792" top="414">
+        <interface id="1" name="Eth1" type="ethernet" network_id="2"/>
+        <interface id="2" name="Eth2" type="ethernet" network_id="5"/>
+        <interface id="7" name="Eth7" type="ethernet" network_id="8"/>
+      </node>
+      <node id="5" name="Leaf3" type="qemu" template="veos" image="veos-4.21.1.1F" console="telnet" cpu="1" cpulimit="0" ram="2048" ethernet="9" uuid="fd5fd5eb-2b04-4497-bf2d-d3fa3201d0c0" qemu_options="-machine type=pc,accel=kvm -serial mon:stdio -nographic -display none -no-user-config -rtc base=utc -boot order=d" qemu_version="4.1.0" qemu_arch="x86_64" delay="0" icon="AristaSW.png" config="0" left="1008" top="411">
+        <interface id="1" name="Eth1" type="ethernet" network_id="1"/>
+        <interface id="2" name="Eth2" type="ethernet" network_id="6"/>
+        <interface id="6" name="Eth6" type="ethernet" network_id="9"/>
+      </node>
+      <node id="6" name="VPC" type="vpcs" template="vpcs" image="" ethernet="1" delay="0" icon="Desktop.png" config="0" left="507" top="564">
+        <interface id="0" name="eth0" type="ethernet" network_id="7"/>
+      </node>
+      <node id="7" name="VPC" type="vpcs" template="vpcs" image="" ethernet="1" delay="0" icon="Desktop.png" config="0" left="766" top="569">
+        <interface id="0" name="eth0" type="ethernet" network_id="8"/>
+      </node>
+      <node id="8" name="VPC" type="vpcs" template="vpcs" image="" ethernet="1" delay="0" icon="Desktop.png" config="0" left="1044" top="561">
+        <interface id="0" name="eth0" type="ethernet" network_id="9"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="bridge" name="Net-spine-1iface_3" left="699" top="259" visibility="0"/>
+      <network id="2" type="bridge" name="Net-spine-1iface_2" left="699" top="259" visibility="0"/>
+      <network id="3" type="bridge" name="Net-spine-1iface_1" left="699" top="259" visibility="0"/>
+      <network id="4" type="bridge" name="Net-spine-2iface_1" left="1005" top="256" visibility="0"/>
+      <network id="5" type="bridge" name="Net-spine-2iface_2" left="1005" top="256" visibility="0"/>
+      <network id="6" type="bridge" name="Net-spine-2iface_3" left="1005" top="256" visibility="0"/>
+      <network id="7" type="bridge" name="Net-Leaf1iface_5" left="579" top="454" visibility="0"/>
+      <network id="8" type="bridge" name="Net-Leaf2iface_7" left="852" top="454" visibility="0"/>
+      <network id="9" type="bridge" name="Net-Leaf3iface_6" left="1068" top="451" visibility="0"/>
+    </networks>
+  </topology>
+</lab>
