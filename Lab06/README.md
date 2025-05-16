@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/c0abedce-ea13-4b25-81c3-3bbe72496b17)### Цель:
+### Цель:
 
 Настроить маршрутизацию в рамках Overlay между клиентами
 
