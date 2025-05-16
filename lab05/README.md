@@ -15,6 +15,7 @@
 
 ### Вывод:
 
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/lab05/evpn05.png)
 
 
 
