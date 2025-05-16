@@ -6,7 +6,7 @@
 
 ### Схема: 
 
-![]image(https://github.com/Hardliner991/Otus-network-engineer/blob/main/lab04/ebgp%20topology.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/lab04/ebgp%20topology.png)
 
 ### Конфиг устройств: 
 
