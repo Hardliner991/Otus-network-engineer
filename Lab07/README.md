@@ -28,8 +28,7 @@
 
 
 ```
-! Command: show running-config
-! device: spine-1 (vEOS-lab, EOS-4.27.3F)
+! device: spine-1 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
 !
@@ -95,6 +94,7 @@ router bgp 65000
    timers bgp 3 9
    maximum-paths 2 ecmp 2
    bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.100.0.0/24 peer-group EVPN remote-as 65003
    bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN next-hop-unchanged
@@ -109,12 +109,24 @@ router bgp 65000
    neighbor LEAF maximum-routes 1000
    redistribute connected route-map RM_CONN
    !
+   vlan 100
+      route-target both 100:100
+   !
+   vlan 200
+      route-target both 200:200
+   !
    address-family evpn
       neighbor EVPN activate
+   !
+   vrf GAGA
+      route-target import evpn 999:999
+      route-target export evpn 999:999
+!
+end
 ```
 ```
 ! Command: show running-config
-! device: spine-2 (vEOS-lab, EOS-4.27.3F)
+! device: spine-2 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
 !
@@ -145,7 +157,6 @@ interface Ethernet3
    no switchport
    ip address 192.4.1.7/31
    bfd interval 100 min-rx 100 multiplier 3
-
 !
 interface Ethernet4
 !
@@ -181,6 +192,7 @@ router bgp 65000
    timers bgp 3 9
    maximum-paths 2 ecmp 2
    bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.100.0.0/24 peer-group EVPN remote-as 65003
    bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN next-hop-unchanged
@@ -195,15 +207,25 @@ router bgp 65000
    neighbor LEAF maximum-routes 1000
    redistribute connected route-map RM_CONN
    !
+   vlan 100
+      route-target both 100:100
+   !
+   vlan 200
+      route-target both 200:200
+   !
    address-family evpn
       neighbor EVPN activate
+   !
+   vrf GAGA
+      route-target import evpn 999:999
+      route-target export evpn 999:999
 !
 end
 
 ```
 ```
 ! Command: show running-config
-! device: leaf1 (vEOS-lab, EOS-4.27.3F)
+! device: leaf1 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
 !
@@ -334,9 +356,9 @@ router bgp 65001
    neighbor SPINE send-community
    neighbor SPINE maximum-routes 1000
    neighbor 192.1.1.0 peer group EVPN
-   no neighbor 192.1.1.0 remote-as
+   neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
-   no neighbor 192.1.2.0 remote-as
+   neighbor 192.1.2.0 remote-as 65000
    neighbor 192.4.1.6 peer group SPINE
    neighbor 192.4.2.2 peer group SPINE
    no neighbor 192.4.2.2 remote-as
@@ -362,12 +384,15 @@ router bgp 65001
       route-target import evpn 999:999
       route-target export evpn 999:999
       redistribute connected
+!
+end
 
 ```
 
 ```
 ! Command: show running-config
-! device: leaf2 (vEOS-lab, EOS-4.27.3F)
+! device: leaf2 (vEOS-lab, EOS-4.27.3F)! Command: show running-config
+! device: leaf2 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
 !
@@ -493,9 +518,9 @@ router bgp 65002
    neighbor SPINE send-community
    neighbor SPINE maximum-routes 1000
    neighbor 192.1.1.0 peer group EVPN
-   no neighbor 192.1.1.0 remote-as
+   neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
-   no neighbor 192.1.2.0 remote-as
+   neighbor 192.1.2.0 remote-as 65000
    neighbor 192.4.1.2 peer group SPINE
    neighbor 192.4.1.5 peer group SPINE
    redistribute connected route-map RM_CONN
@@ -524,7 +549,7 @@ end
 ```
 ```
 ! Command: show running-config
-! device: leaf-3 (vEOS-lab, EOS-4.27.3F)
+! device: leaf-3 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
 !
@@ -606,7 +631,6 @@ interface Vxlan1
    vxlan vlan 200 vni 100200
    vxlan vrf GAGA vni 999
    vxlan virtual-vtep local-interface Loopback100
-   vxlan learn-restrict any
 !
 ip virtual-router mac-address 00:00:00:00:00:03
 !
@@ -636,9 +660,9 @@ router bgp 65003
    neighbor SPINE send-community
    neighbor SPINE maximum-routes 1000
    neighbor 192.1.1.0 peer group EVPN
-   no neighbor 192.1.1.0 remote-as
+   neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
-   no neighbor 192.1.2.0 remote-as
+   neighbor 192.1.2.0 remote-as 65000
    neighbor 192.4.1.4 peer group SPINE
    neighbor 192.4.1.7 peer group SPINE
    neighbor 192.4.1.7 maximum-routes 12000
@@ -668,10 +692,58 @@ router bgp 65003
       route-target export evpn 999:999
 !
 end
+```
+```
+! Command: show running-config
+! device: localhost (vEOS-lab, EOS-4.28.0F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+spanning-tree mode mstp
+!
+vlan 100,200
+!
+interface Port-Channel2
+   switchport trunk allowed vlan 100,200
+   switchport mode trunk
+!
+interface Ethernet1
+   channel-group 2 mode active
+!
+interface Ethernet2
+   channel-group 2 mode active
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
+!
+interface Management1
+!
+interface Vlan100
+   ip address 10.10.2.10/24
+!
+interface Vlan200
+   ip address 10.10.3.10/24
+!
+ip routing
+!
+end
 
 ```
-
-
 
 
 
