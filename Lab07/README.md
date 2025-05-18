@@ -526,12 +526,12 @@ router bgp 65002
    redistribute connected route-map RM_CONN
    !
    vlan 100
-      rd 65001:100100
+      rd 65002:100100
       route-target both 100:100
       redistribute learned
    !
    vlan 200
-      rd 65001:100200
+      rd 65002:100200
       route-target both 200:200
       redistribute learned
    !
