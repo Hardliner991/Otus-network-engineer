@@ -28,6 +28,7 @@
 
 
 ```
+! Command: show running-config
 ! device: spine-1 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
@@ -80,6 +81,9 @@ ip routing
 ip prefix-list PL_LOOP
    seq 10 permit 192.1.1.0/32
    seq 20 permit 192.100.0.0/24
+   seq 30 permit 192.1.0.1/32
+   seq 40 permit 192.1.0.2/32
+   seq 50 permit 192.1.0.3/32
 !
 route-map RM_CONN permit 10
    match ip address prefix-list PL_LOOP
@@ -124,6 +128,7 @@ router bgp 65000
       route-target export evpn 999:999
 !
 end
+
 ```
 ```
 ! Command: show running-config
@@ -140,6 +145,8 @@ service routing protocols model multi-agent
 hostname spine-2
 !
 spanning-tree mode mstp
+!
+vlan 100
 !
 interface Ethernet1
    description to-leaf-1
@@ -178,6 +185,9 @@ ip routing
 !
 ip prefix-list PL_LOOP
    seq 10 permit 192.1.2.0/32
+   seq 20 permit 192.100.0.0/24
+   seq 30 permit 10.10.2.0/24
+   seq 40 permit 10.10.3.0/24
 !
 route-map RM_CONN permit 10
    match ip address prefix-list PL_LOOP
@@ -208,7 +218,9 @@ router bgp 65000
    redistribute connected route-map RM_CONN
    !
    vlan 100
+      rd 65001:100100
       route-target both 100:100
+      redistribute learned
    !
    vlan 200
       route-target both 200:200
@@ -239,6 +251,8 @@ hostname leaf1
 !
 spanning-tree mode mstp
 no spanning-tree vlan-id 4094
+!
+system mac-address 00:00:00:00:00:06
 !
 vlan 100,200
 !
@@ -337,33 +351,34 @@ route-map RM_CONN permit 10
 peer-filter EVPN
    10 match as-range 65000-65003 result accept
 !
+peer-filter LEAF
+   10 match as-range 65000-65003 result accept
+!
 router bgp 65001
    router-id 192.1.0.1
    timers bgp 3 9
    maximum-paths 2 ecmp 2
-   bgp listen range 192.1.0.0/22 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN remote-as 65000
-   no neighbor EVPN next-hop-unchanged
+   neighbor EVPN next-hop-unchanged
    neighbor EVPN update-source Loopback1
    neighbor EVPN ebgp-multihop 3
    neighbor EVPN send-community extended
-   neighbor SPINE peer group
-   neighbor SPINE remote-as 65000
-   neighbor SPINE bfd
-   neighbor SPINE allowas-in 1
-   neighbor SPINE rib-in pre-policy retain all
-   neighbor SPINE send-community
-   neighbor SPINE maximum-routes 1000
+   neighbor LEAF peer group
+   neighbor LEAF remote-as 65000
+   neighbor LEAF bfd
+   neighbor LEAF allowas-in 1
+   neighbor LEAF rib-in pre-policy retain all
+   neighbor LEAF send-community
+   neighbor LEAF maximum-routes 100
    neighbor 192.1.1.0 peer group EVPN
    neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
    neighbor 192.1.2.0 remote-as 65000
-   neighbor 192.4.1.6 peer group SPINE
-   neighbor 192.4.2.2 peer group SPINE
-   no neighbor 192.4.2.2 remote-as
-   neighbor 192.4.2.2 maximum-routes 256000 warning-limit 80 percent
-   neighbor 192.4.2.3 peer group SPINE
+   neighbor 192.4.1.6 peer group LEAF
+   neighbor 192.4.2.3 peer group LEAF
    redistribute connected route-map RM_CONN
    !
    vlan 100
@@ -391,7 +406,6 @@ end
 
 ```
 ! Command: show running-config
-! device: leaf2 (vEOS-lab, EOS-4.27.3F)! Command: show running-config
 ! device: leaf2 (vEOS-lab, EOS-4.28.0F)
 !
 ! boot system flash:/vEOS-lab.swi
@@ -406,6 +420,8 @@ hostname leaf2
 !
 spanning-tree mode mstp
 no spanning-tree vlan-id 4094
+!
+system mac-address 00:00:00:00:00:07
 !
 vlan 100,200
 !
@@ -469,9 +485,11 @@ interface Vlan100
    ip address virtual 10.10.2.253/24
 !
 interface Vlan200
+   vrf GAGA
    ip address virtual 10.10.3.254/24
 !
 interface Vlan4094
+   no autostate
    ip address 10.10.100.1/31
 !
 interface Vxlan1
@@ -500,29 +518,38 @@ mlag configuration
 route-map RM_CONN permit 10
    match ip address prefix-list PL_LOOP
 !
+peer-filter LEAF
+   10 match as-range 65000-65003 result accept
+!
 router bgp 65002
    router-id 192.1.0.2
    timers bgp 3 9
    maximum-paths 2 ecmp 2
+   bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN remote-as 65000
-   no neighbor EVPN next-hop-unchanged
+   neighbor EVPN next-hop-unchanged
    neighbor EVPN update-source Loopback2
    neighbor EVPN ebgp-multihop 3
    neighbor EVPN send-community extended
-   neighbor SPINE peer group
-   neighbor SPINE remote-as 65000
-   neighbor SPINE bfd
-   neighbor SPINE allowas-in 1
-   neighbor SPINE rib-in pre-policy retain all
-   neighbor SPINE send-community
-   neighbor SPINE maximum-routes 1000
+   neighbor LEAF peer group
+   neighbor LEAF remote-as 65000
+   neighbor LEAF bfd
+   neighbor LEAF allowas-in 1
+   neighbor LEAF rib-in pre-policy retain all
+   neighbor LEAF send-community
+   neighbor LEAF maximum-routes 1000
    neighbor 192.1.1.0 peer group EVPN
    neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
    neighbor 192.1.2.0 remote-as 65000
-   neighbor 192.4.1.2 peer group SPINE
-   neighbor 192.4.1.5 peer group SPINE
+   neighbor 192.4.1.2 peer group LEAF
+   neighbor 192.4.1.5 peer group LEAF
+   neighbor 192.100.0.1 remote-as 65001
+   neighbor 192.100.0.1 update-source Loopback100
+   neighbor 192.100.0.3 remote-as 65003
+   neighbor 192.100.0.3 update-source Loopback100
    redistribute connected route-map RM_CONN
    !
    vlan 100
@@ -563,7 +590,7 @@ hostname leaf-3
 !
 spanning-tree mode mstp
 !
-vlan 10,20,25,100,200
+vlan 100,200
 !
 vrf instance GAGA
 !
@@ -601,7 +628,7 @@ interface Ethernet7
 !
 interface Ethernet8
 !
-interface Loopback2
+interface Loopback1
    ip address 192.1.0.3/32
 !
 interface Loopback100
@@ -609,10 +636,6 @@ interface Loopback100
    ip address 192.100.0.3/32
 !
 interface Management1
-!
-interface Vlan25
-   vrf GAGA
-   ip address virtual 10.10.77.253/24
 !
 interface Vlan100
    description to-vpc
@@ -626,7 +649,6 @@ interface Vlan200
 interface Vxlan1
    vxlan source-interface Loopback100
    vxlan udp-port 4789
-   vxlan vlan 25 vni 10025
    vxlan vlan 100 vni 100100
    vxlan vlan 200 vni 100200
    vxlan vrf GAGA vni 999
@@ -639,32 +661,42 @@ ip routing vrf GAGA
 !
 ip prefix-list PL_LOOP
    seq 10 permit 192.1.0.3/32
-   seq 20 permit 10.10.77.0/24
+   seq 20 permit 192.100.0.3/32
 !
 route-map RM_CONN permit 10
    match ip address prefix-list PL_LOOP
 !
+peer-filter EVPN
+   10 match as-range 65000-65003 result accept
+!
+peer-filter LEAF
+   10 match as-range 65000-65003 result accept
+!
 router bgp 65003
    router-id 192.1.0.3
    timers bgp 3 9
-   bgp listen range 192.1.0.0/24 peer-group EVPN peer-filter EVPN
+   maximum-paths 2 ecmp 2
+   bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
+   bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
+   neighbor EVPN remote-as 65000
    neighbor EVPN next-hop-unchanged
-   neighbor EVPN update-source Loopback2
+   neighbor EVPN update-source Loopback1
    neighbor EVPN ebgp-multihop 3
    neighbor EVPN send-community extended
-   neighbor EVPN maximum-routes 12000
-   neighbor SPINE peer group
-   neighbor SPINE remote-as 65000
-   neighbor SPINE allowas-in 1
-   neighbor SPINE send-community
-   neighbor SPINE maximum-routes 1000
+   neighbor LEAF peer group
+   neighbor LEAF remote-as 65000
+   neighbor LEAF bfd
+   neighbor LEAF allowas-in 1
+   neighbor LEAF rib-in pre-policy retain all
+   neighbor LEAF send-community
+   neighbor LEAF maximum-routes 1000
    neighbor 192.1.1.0 peer group EVPN
    neighbor 192.1.1.0 remote-as 65000
    neighbor 192.1.2.0 peer group EVPN
    neighbor 192.1.2.0 remote-as 65000
-   neighbor 192.4.1.4 peer group SPINE
-   neighbor 192.4.1.7 peer group SPINE
+   neighbor 192.4.1.4 peer group LEAF
+   neighbor 192.4.1.7 peer group LEAF
    neighbor 192.4.1.7 maximum-routes 12000
    redistribute connected route-map RM_CONN
    !
@@ -678,11 +710,6 @@ router bgp 65003
       route-target both 200:200
       redistribute learned
    !
-   vlan 25
-      rd 65003:100025
-      route-target both 25:25
-      redistribute learned
-   !
    address-family evpn
       neighbor EVPN activate
    !
@@ -690,6 +717,7 @@ router bgp 65003
       rd 65003:999
       route-target import evpn 999:999
       route-target export evpn 999:999
+      redistribute connected
 !
 end
 ```
