@@ -12,19 +12,18 @@
 
 ### Схема:
 
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/Lab07Topology.png)
 
 
+### Выводы команд:
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/Leaf1MLAG.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/Leaf1evpn.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/Leaf1vxlanvni.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/MLAG%20CHECK.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Lab07/leaf1mlagstate.png)
 
 
-
-
-
-
-
-
-
-
-###Конфиг: 
+###Конфиги: 
 
 
 ```
