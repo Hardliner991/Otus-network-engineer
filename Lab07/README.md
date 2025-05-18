@@ -79,6 +79,7 @@ ip routing
 !
 ip prefix-list PL_LOOP
    seq 10 permit 192.1.1.0/32
+   seq 20 permit 192.100.0.0/24
 !
 route-map RM_CONN permit 10
    match ip address prefix-list PL_LOOP
@@ -94,12 +95,12 @@ router bgp 65000
    timers bgp 3 9
    maximum-paths 2 ecmp 2
    bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
-   bgp listen range 192.100.0.0/24 peer-group EVPN remote-as 65003
    bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN next-hop-unchanged
    neighbor EVPN update-source Loopback1
    neighbor EVPN ebgp-multihop 3
+   neighbor EVPN route-reflector-client
    neighbor EVPN send-community extended
    neighbor EVPN maximum-routes 12000
    neighbor LEAF peer group
@@ -192,7 +193,6 @@ router bgp 65000
    timers bgp 3 9
    maximum-paths 2 ecmp 2
    bgp listen range 192.1.0.0/16 peer-group EVPN peer-filter EVPN
-   bgp listen range 192.100.0.0/24 peer-group EVPN remote-as 65003
    bgp listen range 192.4.0.0/22 peer-group LEAF peer-filter LEAF
    neighbor EVPN peer group
    neighbor EVPN next-hop-unchanged
