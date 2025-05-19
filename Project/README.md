@@ -31,7 +31,7 @@ WAN/MPLS
 
 ## Топология и логическая схема
 
-![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Project/TopologyCLOS.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Project/Topology.png)
 
 ## Ключевые аспекты проектирования
 
@@ -229,6 +229,7 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
  *  ec    RD: 65003:999 ip-prefix 66.66.66.0/24
                                  192.100.0.3           -       100     0       65000 65003 i
 ```
+Состояние MLAG между Leaf1 и Leaf2
 ```
 leaf1(config)#sh mlag detail
 MLAG Configuration:
@@ -302,11 +303,101 @@ VPCS> ping 10.10.2.13
 84 bytes from 10.10.2.13 icmp_seq=3 ttl=64 time=8.140 ms
 84 bytes from 10.10.2.13 icmp_seq=4 ttl=64 time=8.658 ms
 84 bytes from 10.10.2.13 icmp_seq=5 ttl=64 time=7.801 ms
+```
+VPC 10.10.3.13 ping VPC 10.10.3.11
+```
+VPCS> ping 10.10.3.11
 
+84 bytes from 10.10.3.11 icmp_seq=1 ttl=64 time=10.237 ms
+84 bytes from 10.10.3.11 icmp_seq=2 ttl=64 time=10.215 ms
+84 bytes from 10.10.3.11 icmp_seq=3 ttl=64 time=9.501 ms
+84 bytes from 10.10.3.11 icmp_seq=4 ttl=64 time=9.003 ms
+84 bytes from 10.10.3.11 icmp_seq=5 ttl=64 time=9.568 ms
+```
+VPC 10.10.3.11 ping VPC 10.10.3.13
+```
+VPCS> ping 10.10.3.13
+
+84 bytes from 10.10.3.13 icmp_seq=1 ttl=64 time=8.853 ms
+84 bytes from 10.10.3.13 icmp_seq=2 ttl=64 time=8.311 ms
+84 bytes from 10.10.3.13 icmp_seq=3 ttl=64 time=8.894 ms
+84 bytes from 10.10.3.13 icmp_seq=4 ttl=64 time=8.480 ms
+84 bytes from 10.10.3.13 icmp_seq=5 ttl=64 time=10.564 ms
 ```
 
+Проверка связности через Lo1 и Lo100
 
+```
+spine-1(config)#ping 192.1.0.1
+PING 192.1.0.1 (192.1.0.1) 72(100) bytes of data.
+80 bytes from 192.1.0.1: icmp_seq=1 ttl=64 time=3.26 ms
+80 bytes from 192.1.0.1: icmp_seq=2 ttl=64 time=1.43 ms
+80 bytes from 192.1.0.1: icmp_seq=3 ttl=64 time=1.53 ms
+80 bytes from 192.1.0.1: icmp_seq=4 ttl=64 time=2.40 ms
+80 bytes from 192.1.0.1: icmp_seq=5 ttl=64 time=1.83 ms
 
+--- 192.1.0.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 13ms
+rtt min/avg/max/mdev = 1.435/2.093/3.261/0.675 ms, ipg/ewma 3.366/2.670 ms
+spine-1(config)#ping 192.1.0.2
+PING 192.1.0.2 (192.1.0.2) 72(100) bytes of data.
+80 bytes from 192.1.0.2: icmp_seq=1 ttl=64 time=2.08 ms
+80 bytes from 192.1.0.2: icmp_seq=2 ttl=64 time=1.90 ms
+80 bytes from 192.1.0.2: icmp_seq=3 ttl=64 time=1.81 ms
+80 bytes from 192.1.0.2: icmp_seq=4 ttl=64 time=1.55 ms
+80 bytes from 192.1.0.2: icmp_seq=5 ttl=64 time=1.74 ms
+
+--- 192.1.0.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 11ms
+rtt min/avg/max/mdev = 1.555/1.820/2.083/0.180 ms, ipg/ewma 2.910/1.942 ms
+spine-1(config)#ping 192.1.0.3
+PING 192.1.0.3 (192.1.0.3) 72(100) bytes of data.
+80 bytes from 192.1.0.3: icmp_seq=1 ttl=64 time=1.85 ms
+80 bytes from 192.1.0.3: icmp_seq=2 ttl=64 time=1.84 ms
+80 bytes from 192.1.0.3: icmp_seq=3 ttl=64 time=1.54 ms
+80 bytes from 192.1.0.3: icmp_seq=4 ttl=64 time=1.58 ms
+80 bytes from 192.1.0.3: icmp_seq=5 ttl=64 time=1.81 ms
+
+--- 192.1.0.3 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 12ms
+rtt min/avg/max/mdev = 1.544/1.727/1.854/0.138 ms, ipg/ewma 3.161/1.788 ms
+
+```
+```
+spine-1(config)#ping 192.100.0.1
+PING 192.100.0.1 (192.100.0.1) 72(100) bytes of data.
+80 bytes from 192.100.0.1: icmp_seq=1 ttl=64 time=1.90 ms
+80 bytes from 192.100.0.1: icmp_seq=2 ttl=64 time=1.44 ms
+80 bytes from 192.100.0.1: icmp_seq=3 ttl=64 time=1.66 ms
+80 bytes from 192.100.0.1: icmp_seq=4 ttl=64 time=2.02 ms
+80 bytes from 192.100.0.1: icmp_seq=5 ttl=64 time=2.41 ms
+
+--- 192.100.0.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 11ms
+rtt min/avg/max/mdev = 1.445/1.890/2.410/0.329 ms, ipg/ewma 2.777/1.921 ms
+spine-1(config)#ping 192.100.0.2
+PING 192.100.0.2 (192.100.0.2) 72(100) bytes of data.
+80 bytes from 192.100.0.2: icmp_seq=1 ttl=64 time=2.40 ms
+80 bytes from 192.100.0.2: icmp_seq=2 ttl=64 time=1.82 ms
+80 bytes from 192.100.0.2: icmp_seq=3 ttl=64 time=1.85 ms
+80 bytes from 192.100.0.2: icmp_seq=4 ttl=64 time=1.83 ms
+80 bytes from 192.100.0.2: icmp_seq=5 ttl=64 time=1.92 ms
+
+--- 192.100.0.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 12ms
+rtt min/avg/max/mdev = 1.827/1.969/2.405/0.225 ms, ipg/ewma 3.017/2.181 ms
+spine-1(config)#ping 192.100.0.3
+PING 192.100.0.3 (192.100.0.3) 72(100) bytes of data.
+80 bytes from 192.100.0.3: icmp_seq=1 ttl=64 time=2.12 ms
+80 bytes from 192.100.0.3: icmp_seq=2 ttl=64 time=1.80 ms
+80 bytes from 192.100.0.3: icmp_seq=3 ttl=64 time=1.71 ms
+80 bytes from 192.100.0.3: icmp_seq=4 ttl=64 time=1.27 ms
+80 bytes from 192.100.0.3: icmp_seq=5 ttl=64 time=1.81 ms
+
+--- 192.100.0.3 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 11ms
+rtt min/avg/max/mdev = 1.273/1.747/2.126/0.274 ms, ipg/ewma 2.841/1.927 ms
+```
 
 ## Конфигурация устройств: 
 
@@ -1059,6 +1150,9 @@ router bgp 65003
 !
 end
 ```
+## Вывод
+
+ДОПИСАТЬ
 
 
 
