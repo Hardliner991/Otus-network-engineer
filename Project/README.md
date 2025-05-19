@@ -4,17 +4,21 @@
 
 ### 1. Основные компоненты
 
-### A. EVPN (Ethernet VPN)
+EVPN (Ethernet VPN)
 
 Control Plane , использующая BGP для обмена маршрутами между коммутаторами (VTEP).
 Поддерживает многопоточность , маршрутизацию L2/L3 , интеграцию с VRF и оптимизацию BUM-трафика (Broadcast, Unknown Unicast, Multicast) .
 
-### B. VXLAN (Virtual Extensible LAN)
+VXLAN (Virtual Extensible LAN)
 
 Туннелирование , позволяющее расширять L2-сети между ЦОДами через IP-инфраструктуру.
 Использует VNI (VXLAN Network Identifier) для изоляции трафика между виртуальными сетями.
 
-### C. Spine-Leaf архитектура
+Spine-Leaf архитектура
+
+ДОПИСАТЬ
+
+
 
 ЦОД строится по схеме spine-leaf , где:
 
@@ -27,7 +31,7 @@ Leaf — Border коммутаторы, подключающие серверы 
 
 ### 2. Топология и логическая схема
 
-
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Project/Topology.png)
 
 ### 3. Ключевые аспекты проектирования
 
