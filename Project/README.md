@@ -31,7 +31,7 @@ WAN/MPLS
 
 ## Топология и логическая схема
 
-![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Project/Topology.png)
+![](https://github.com/Hardliner991/Otus-network-engineer/blob/main/Project/TopologyCLOS.png)
 
 ## Ключевые аспекты проектирования
 
@@ -95,7 +95,220 @@ Redundant VTEP : Сервер подключается к двум Leaf-комм
 
 ## Ход работ
 
-Конфигурация устройств: 
+### Вывод диагностической информации
+
+Leaf1
+
+```
+leaf1(config)#sh ip bgp summary
+BGP summary information for VRF default
+Router identifier 192.1.0.1, local AS number 65001
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  192.1.1.0        4  65000            778       781    0    0 00:38:32 Estab   5      4
+  192.1.2.0        4  65000            780       781    0    0 00:38:38 Estab   5      4
+  192.4.1.6        4  65000            779       780    0    0 00:38:36 Estab   5      5
+  192.4.2.3        4  65000            780       783    0    0 00:38:40 Estab   5      5
+```
+```
+leaf1(config-if-Et2)#sh bgp evpn
+BGP routing table information for VRF default
+Router identifier 192.1.0.1, local AS number 65001
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 65003:1003333 mac-ip 5000.008c.5cd7
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:1003333 mac-ip 5000.008c.5cd7
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65003:1003333 mac-ip 5000.008c.5cd7 33.33.33.50
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:1003333 mac-ip 5000.008c.5cd7 33.33.33.50
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65001:1003333 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65001:1003333 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65002:100100 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65002:100100 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65002:100200 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65002:100200 imet 192.100.0.2
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65003:100100 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:100100 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65003:100200 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:100200 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65003:1003333 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:1003333 imet 192.100.0.3
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >      RD: 65001:100100 imet 192.100.0.1
+                                 -                     -       -       0       i
+ * >      RD: 65001:100200 imet 192.100.0.1
+                                 -                     -       -       0       i
+ * >Ec    RD: 65003:333 ip-prefix 0.0.0.0/0
+                                 192.100.0.3           -       100     0       65000 65003 64009 ?
+ *  ec    RD: 65003:333 ip-prefix 0.0.0.0/0
+                                 192.100.0.3           -       100     0       65000 65003 64009 ?
+ * >Ec    RD: 65003:999 ip-prefix 0.0.0.0/0
+                                 192.100.0.3           -       100     0       65000 65003 64009 ?
+ *  ec    RD: 65003:999 ip-prefix 0.0.0.0/0
+                                 192.100.0.3           -       100     0       65000 65003 64009 ?
+ * >Ec    RD: 65003:333 ip-prefix 8.8.4.4/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:333 ip-prefix 8.8.4.4/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:999 ip-prefix 8.8.4.4/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:999 ip-prefix 8.8.4.4/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:333 ip-prefix 8.8.8.8/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:333 ip-prefix 8.8.8.8/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:999 ip-prefix 8.8.8.8/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:999 ip-prefix 8.8.8.8/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >      RD: 65001:999 ip-prefix 10.10.2.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 65002:999 ip-prefix 10.10.2.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65002:999 ip-prefix 10.10.2.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65003:999 ip-prefix 10.10.2.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:999 ip-prefix 10.10.2.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >      RD: 65001:999 ip-prefix 10.10.3.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 65002:999 ip-prefix 10.10.3.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65002:999 ip-prefix 10.10.3.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65003:999 ip-prefix 10.10.3.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:999 ip-prefix 10.10.3.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65003:333 ip-prefix 10.200.0.1/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:333 ip-prefix 10.200.0.1/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:999 ip-prefix 10.200.0.1/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:999 ip-prefix 10.200.0.1/32
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65002:333 ip-prefix 33.33.33.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ *  ec    RD: 65002:333 ip-prefix 33.33.33.0/24
+                                 192.100.0.2           -       100     0       65000 65002 i
+ * >Ec    RD: 65003:333 ip-prefix 33.33.33.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:333 ip-prefix 33.33.33.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ * >Ec    RD: 65003:999 ip-prefix 33.33.33.0/24
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:999 ip-prefix 33.33.33.0/24
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:333 ip-prefix 66.66.66.0/24
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ *  ec    RD: 65003:333 ip-prefix 66.66.66.0/24
+                                 192.100.0.3           -       100     0       65000 65003 64009 i
+ * >Ec    RD: 65003:999 ip-prefix 66.66.66.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+ *  ec    RD: 65003:999 ip-prefix 66.66.66.0/24
+                                 192.100.0.3           -       100     0       65000 65003 i
+```
+```
+leaf1(config)#sh mlag detail
+MLAG Configuration:
+domain-id                          :               mlag1
+local-interface                    :            Vlan4094
+peer-address                       :         10.10.100.1
+peer-link                          :       Port-Channel1
+peer-config                        :        inconsistent
+
+MLAG Status:
+state                              :              Active
+negotiation status                 :           Connected
+peer-link status                   :                  Up
+local-int status                   :                  Up
+system-id                          :   52:00:00:5b:6f:f5
+dual-primary detection             :            Disabled
+dual-primary interface errdisabled :               False
+
+MLAG Ports:
+Disabled                           :                   0
+Configured                         :                   0
+Inactive                           :                   0
+Active-partial                     :                   0
+Active-full                        :                   1
+
+MLAG Detailed Status:
+State                           :            secondary
+Peer State                      :              primary
+State changes                   :                    2
+Last state change time          :          0:06:10 ago
+Hardware ready                  :                 True
+Failover                        :                False
+Failover Cause(s)               :              Unknown
+Last failover change time       :                never
+Secondary from failover         :                 True
+Peer MAC address                :    50:00:00:5b:6f:f5
+Peer MAC routing supported      :                False
+Reload delay                    :          300 seconds
+Non-MLAG reload delay           :          300 seconds
+Ports errdisabled               :                False
+Lacp standby                    :                False
+Configured heartbeat interval   :              4000 ms
+Effective heartbeat interval    :              4000 ms
+Heartbeat timeout               :             60000 ms
+Last heartbeat timeout          :                never
+Heartbeat timeouts since reboot :                    0
+UDP heartbeat alive             :                 True
+Heartbeats sent/received        :                95/94
+Peer monotonic clock offset     :   513.530470 seconds
+Agent should be running         :                 True
+P2p mount state changes         :                    1
+Fast MAC redirection enabled    :                False
+
+```
+VPC 10.10.2.13 ping VPC 10.10.2.11
+```
+VPCS> ping 10.10.2.11
+
+84 bytes from 10.10.2.11 icmp_seq=1 ttl=64 time=8.988 ms
+84 bytes from 10.10.2.11 icmp_seq=2 ttl=64 time=8.087 ms
+84 bytes from 10.10.2.11 icmp_seq=3 ttl=64 time=8.520 ms
+84 bytes from 10.10.2.11 icmp_seq=4 ttl=64 time=6.713 ms
+84 bytes from 10.10.2.11 icmp_seq=5 ttl=64 time=8.846 ms
+```
+VPC 10.10.2.11 ping VPC 10.10.2.13
+```
+VPCS> ping 10.10.2.13
+
+84 bytes from 10.10.2.13 icmp_seq=1 ttl=64 time=7.775 ms
+84 bytes from 10.10.2.13 icmp_seq=2 ttl=64 time=7.767 ms
+84 bytes from 10.10.2.13 icmp_seq=3 ttl=64 time=8.140 ms
+84 bytes from 10.10.2.13 icmp_seq=4 ttl=64 time=8.658 ms
+84 bytes from 10.10.2.13 icmp_seq=5 ttl=64 time=7.801 ms
+
+```
+
+
+
+
+## Конфигурация устройств: 
 
 ```
 ! device: spine-1 (vEOS-lab, EOS-4.28.0F)
