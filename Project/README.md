@@ -49,6 +49,15 @@ Optimized BUM (OB) : Современный подход, сочетающий i
 ### E. Отказоустойчивость
 Redundant VTEP : Сервер подключается к двум Leaf-коммутаторам (vPC или MLAG).
 
+### Адресное пространство
+
+124	42	14
+2412		41
+14	4	4
+![image](https://github.com/user-attachments/assets/82ca6601-68c3-4ed3-bbbd-73825ad7282c)
+
+
+
 
 
 
